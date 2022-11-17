@@ -115,34 +115,34 @@ mkAggTrade aggTradeMM aggTradeT aggTradeA aggTradeF aggTradeL aggTradeM aggTrade
     }
 #+END_SRC
 
-* Usage example
-For an example of its use see the following:
+* Usage examples
+** getSapiV1SystemStatus
 
 #+BEGIN_SRC haskell
 {-# LANGUAGE OverloadedStrings #-}
 
-module Demo where
+module Example1 where
 
-import qualified Binance as B
+import qualified Binance
 import Control.Monad (when)
 import qualified Data.Text as T
 import qualified Network.HTTP.Simple as HS
 
-trade ::  Bool -> IO ()
+trade :: Bool -> IO ()
 trade verbose = do
   ss <- getSystemStatus
   putStrLn $ "Binance API system status: " <> ss
   where
     getSystemStatus :: IO String
     getSystemStatus = do
-      resp <- B.runWithConfiguration B.defaultConfiguration B.getSapiV1SystemStatus
+      resp <- Binance.runWithConfiguration Binance.defaultConfiguration Binance.getSapiV1SystemStatus
       when verbose (print resp)
       pure $
         case HS.getResponseBody resp of
-          B.GetSapiV1SystemStatusResponse200 status ->
-            T.unpack (B.getSapiV1SystemStatusResponseBody200Msg status)
+          Binance.GetSapiV1SystemStatusResponse200 status ->
+            T.unpack (Binance.getSapiV1SystemStatusResponseBody200Msg status)
               ++ " ("
-              ++ show (B.getSapiV1SystemStatusResponseBody200Status status)
+              ++ show (Binance.getSapiV1SystemStatusResponseBody200Status status)
               ++ ")"
           _ -> "wrong type of response"
 #+END_SRC
@@ -169,8 +169,78 @@ Response {responseStatus = Status {statusCode = 200, statusMessage = ""}, respon
 Binance API system status: normal (0)
 #+END_SRC
 
+** getApiV3Klines
+
+#+BEGIN_SRC haskell
+{-# LANGUAGE OverloadedStrings #-}
+
+module Example2 where
+
+import qualified Binance
+import Control.Monad (when)
+import Data.Either ()
+import qualified Data.Text as T
+import qualified Network.HTTP.Simple as HS
+import qualified Settings as S
+
+defaultConf = Binance.defaultConfiguration
+
+config = Binance.apiKeyInHeaderAuthenticationSecurityScheme "your-api-key-goes-here"
+
+conf =
+  defaultConf
+    { Binance.configSecurityScheme = config
+    }
+
+trade :: Bool -> IO ()
+trade  verbose = do
+  kl <- getKlines
+  putStr "Binance API klines "
+  case kl of
+    Left e -> putStrLn $ "*** " <> e
+    Right kls -> do
+      let l = length kls
+      putStrLn $ "(" <> show l <> ")"
+      mapM_ (\(i, ks) -> putStrLn $ show i <> ": [ " <> printKline ks <> " ]") $ zip [1 ..] kls
+  where
+    printKline = foldl (\acc c -> acc <> kLineToString c <> ", ") ""
+      where
+        kLineToString k = case k of
+          Binance.GetApiV3KlinesResponseBody200Variant1 s -> show s
+          Binance.GetApiV3KlinesResponseBody200Variant2 s -> T.unpack s
+
+    {-
+    [
+      [GetApiV3KlinesResponseBody200Variant1 1668666360000,       // Kline open time
+       GetApiV3KlinesResponseBody200Variant2 "16591.74000000",    // Open price
+       GetApiV3KlinesResponseBody200Variant2 "16592.06000000",    // High price
+       GetApiV3KlinesResponseBody200Variant2 "16583.62000000",    // Low price
+       GetApiV3KlinesResponseBody200Variant2 "16589.72000000",    // Close price
+       GetApiV3KlinesResponseBody200Variant2 "57.96618000",       // Volume
+       GetApiV3KlinesResponseBody200Variant1 1668666419999,       // Kline Close time
+       GetApiV3KlinesResponseBody200Variant2 "961540.25322330",   // Quote asset volume
+       GetApiV3KlinesResponseBody200Variant1 1219,                // Number of trades
+       GetApiV3KlinesResponseBody200Variant2 "29.84483000",       // Taker buy base asset volume
+       GetApiV3KlinesResponseBody200Variant2 "495075.60625770",   // Taker buy quote asset volume
+       GetApiV3KlinesResponseBody200Variant2 "0"]                 // Unused field, ignore.
+     ]
+    -}
+    getKlines = do
+      resp <-
+        Binance.runWithConfiguration conf $
+          Binance.getApiV3Klines $
+            Binance.mkGetApiV3KlinesParameters Binance.GetApiV3KlinesParametersQueryIntervalEnum1m "BTCBUSD"
+      pure $
+        case HS.getResponseBody resp of
+          Binance.GetApiV3KlinesResponse200 klines -> Right klines
+          _ -> Left "wrong type of response"
+
+#+END_SRC
+
+** Other examples
+
 Another example of using generated code — not Binance API related — can be found here: [[https://github.com/Haskell-OpenAPI-Code-Generator/Stripe-Haskell-Library/tree/master/example][Haskell-OpenAPI-Code-Generator/Stripe-Haskell-Library/example]].
 
 * Disclaimer
 
-I have not yet tested this client library myself — aside from the small example given above — so no guarantees are given at all!. Use this software at your own risk — [[https://www.law.cornell.edu/wex/caveat_emptor][caveat emptor]]!
+I have not yet tested this client library myself — aside from the small examples given above — so no guarantees are given at all!. Use this software at your own risk — [[https://www.law.cornell.edu/wex/caveat_emptor][caveat emptor]]!
