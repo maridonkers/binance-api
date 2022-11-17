@@ -1,0 +1,14 @@
+module Binance.Types.SubAccountCOINFuturesDetails where
+import Data.Aeson
+import qualified Data.Aeson as Data.Aeson.Types.Internal
+import qualified Binance.Common
+data SubAccountCOINFuturesDetails
+instance Show SubAccountCOINFuturesDetails
+instance Eq SubAccountCOINFuturesDetails
+instance FromJSON SubAccountCOINFuturesDetails
+instance ToJSON SubAccountCOINFuturesDetails
+data SubAccountCOINFuturesDetailsAssets
+instance Show SubAccountCOINFuturesDetailsAssets
+instance Eq SubAccountCOINFuturesDetailsAssets
+instance FromJSON SubAccountCOINFuturesDetailsAssets
+instance ToJSON SubAccountCOINFuturesDetailsAssets

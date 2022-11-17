@@ -1,0 +1,9 @@
+module Binance.Types.BswapAddLiquidityPreviewCombination where
+import Data.Aeson
+import qualified Data.Aeson as Data.Aeson.Types.Internal
+import qualified Binance.Common
+data BswapAddLiquidityPreviewCombination
+instance Show BswapAddLiquidityPreviewCombination
+instance Eq BswapAddLiquidityPreviewCombination
+instance FromJSON BswapAddLiquidityPreviewCombination
+instance ToJSON BswapAddLiquidityPreviewCombination

@@ -1,0 +1,10 @@
+module Binance.Types.SavingsFixedActivityPurchaseRecord where
+import Data.Aeson
+import qualified Data.Aeson as Data.Aeson.Types.Internal
+import qualified Binance.Common
+data SavingsFixedActivityPurchaseRecordItem
+instance Show SavingsFixedActivityPurchaseRecordItem
+instance Eq SavingsFixedActivityPurchaseRecordItem
+instance FromJSON SavingsFixedActivityPurchaseRecordItem
+instance ToJSON SavingsFixedActivityPurchaseRecordItem
+type SavingsFixedActivityPurchaseRecord = [SavingsFixedActivityPurchaseRecordItem]

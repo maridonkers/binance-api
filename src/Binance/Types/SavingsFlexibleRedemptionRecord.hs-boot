@@ -1,0 +1,10 @@
+module Binance.Types.SavingsFlexibleRedemptionRecord where
+import Data.Aeson
+import qualified Data.Aeson as Data.Aeson.Types.Internal
+import qualified Binance.Common
+data SavingsFlexibleRedemptionRecordItem
+instance Show SavingsFlexibleRedemptionRecordItem
+instance Eq SavingsFlexibleRedemptionRecordItem
+instance FromJSON SavingsFlexibleRedemptionRecordItem
+instance ToJSON SavingsFlexibleRedemptionRecordItem
+type SavingsFlexibleRedemptionRecord = [SavingsFlexibleRedemptionRecordItem]

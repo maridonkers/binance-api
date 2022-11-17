@@ -1,0 +1,14 @@
+module Binance.Types.MarginTransferDetails where
+import Data.Aeson
+import qualified Data.Aeson as Data.Aeson.Types.Internal
+import qualified Binance.Common
+data MarginTransferDetails
+instance Show MarginTransferDetails
+instance Eq MarginTransferDetails
+instance FromJSON MarginTransferDetails
+instance ToJSON MarginTransferDetails
+data MarginTransferDetailsRows
+instance Show MarginTransferDetailsRows
+instance Eq MarginTransferDetailsRows
+instance FromJSON MarginTransferDetailsRows
+instance ToJSON MarginTransferDetailsRows

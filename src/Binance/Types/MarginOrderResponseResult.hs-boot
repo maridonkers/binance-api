@@ -1,0 +1,9 @@
+module Binance.Types.MarginOrderResponseResult where
+import Data.Aeson
+import qualified Data.Aeson as Data.Aeson.Types.Internal
+import qualified Binance.Common
+data MarginOrderResponseResult
+instance Show MarginOrderResponseResult
+instance Eq MarginOrderResponseResult
+instance FromJSON MarginOrderResponseResult
+instance ToJSON MarginOrderResponseResult

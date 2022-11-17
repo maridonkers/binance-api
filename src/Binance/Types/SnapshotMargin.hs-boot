@@ -1,0 +1,24 @@
+module Binance.Types.SnapshotMargin where
+import Data.Aeson
+import qualified Data.Aeson as Data.Aeson.Types.Internal
+import qualified Binance.Common
+data SnapshotMargin
+instance Show SnapshotMargin
+instance Eq SnapshotMargin
+instance FromJSON SnapshotMargin
+instance ToJSON SnapshotMargin
+data SnapshotMarginSnapshotVos
+instance Show SnapshotMarginSnapshotVos
+instance Eq SnapshotMarginSnapshotVos
+instance FromJSON SnapshotMarginSnapshotVos
+instance ToJSON SnapshotMarginSnapshotVos
+data SnapshotMarginSnapshotVosData
+instance Show SnapshotMarginSnapshotVosData
+instance Eq SnapshotMarginSnapshotVosData
+instance FromJSON SnapshotMarginSnapshotVosData
+instance ToJSON SnapshotMarginSnapshotVosData
+data SnapshotMarginSnapshotVosDataUserAssets
+instance Show SnapshotMarginSnapshotVosDataUserAssets
+instance Eq SnapshotMarginSnapshotVosDataUserAssets
+instance FromJSON SnapshotMarginSnapshotVosDataUserAssets
+instance ToJSON SnapshotMarginSnapshotVosDataUserAssets

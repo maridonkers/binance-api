@@ -1,0 +1,29 @@
+module Binance.Types.SnapshotFutures where
+import Data.Aeson
+import qualified Data.Aeson as Data.Aeson.Types.Internal
+import qualified Binance.Common
+data SnapshotFutures
+instance Show SnapshotFutures
+instance Eq SnapshotFutures
+instance FromJSON SnapshotFutures
+instance ToJSON SnapshotFutures
+data SnapshotFuturesSnapshotVos
+instance Show SnapshotFuturesSnapshotVos
+instance Eq SnapshotFuturesSnapshotVos
+instance FromJSON SnapshotFuturesSnapshotVos
+instance ToJSON SnapshotFuturesSnapshotVos
+data SnapshotFuturesSnapshotVosData
+instance Show SnapshotFuturesSnapshotVosData
+instance Eq SnapshotFuturesSnapshotVosData
+instance FromJSON SnapshotFuturesSnapshotVosData
+instance ToJSON SnapshotFuturesSnapshotVosData
+data SnapshotFuturesSnapshotVosDataAssets
+instance Show SnapshotFuturesSnapshotVosDataAssets
+instance Eq SnapshotFuturesSnapshotVosDataAssets
+instance FromJSON SnapshotFuturesSnapshotVosDataAssets
+instance ToJSON SnapshotFuturesSnapshotVosDataAssets
+data SnapshotFuturesSnapshotVosDataPosition
+instance Show SnapshotFuturesSnapshotVosDataPosition
+instance Eq SnapshotFuturesSnapshotVosDataPosition
+instance FromJSON SnapshotFuturesSnapshotVosDataPosition
+instance ToJSON SnapshotFuturesSnapshotVosDataPosition

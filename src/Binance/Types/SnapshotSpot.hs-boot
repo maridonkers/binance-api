@@ -1,0 +1,24 @@
+module Binance.Types.SnapshotSpot where
+import Data.Aeson
+import qualified Data.Aeson as Data.Aeson.Types.Internal
+import qualified Binance.Common
+data SnapshotSpot
+instance Show SnapshotSpot
+instance Eq SnapshotSpot
+instance FromJSON SnapshotSpot
+instance ToJSON SnapshotSpot
+data SnapshotSpotSnapshotVos
+instance Show SnapshotSpotSnapshotVos
+instance Eq SnapshotSpotSnapshotVos
+instance FromJSON SnapshotSpotSnapshotVos
+instance ToJSON SnapshotSpotSnapshotVos
+data SnapshotSpotSnapshotVosData
+instance Show SnapshotSpotSnapshotVosData
+instance Eq SnapshotSpotSnapshotVosData
+instance FromJSON SnapshotSpotSnapshotVosData
+instance ToJSON SnapshotSpotSnapshotVosData
+data SnapshotSpotSnapshotVosDataBalances
+instance Show SnapshotSpotSnapshotVosDataBalances
+instance Eq SnapshotSpotSnapshotVosDataBalances
+instance FromJSON SnapshotSpotSnapshotVosDataBalances
+instance ToJSON SnapshotSpotSnapshotVosDataBalances
