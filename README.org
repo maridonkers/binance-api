@@ -149,7 +149,7 @@ trade verbose = do
 
 Running this example code results in the following output:
 
-#+BEGIN_SRC json
+#+BEGIN_EXAMPLE
 Response {responseStatus = Status {statusCode = 200, statusMessage = ""}, responseVersion = HTTP/1.1, responseHeaders = [("Content-Type","application/json;charset=UTF-8"),("Content-Length","27"),("Connection","keep-alive"),("Date","Wed, 16 Nov 2022 20:18:25 GMT"),("Server","nginx"),("X-SAPI-USED-IP-WEIGHT-1M","1"),("Strict-Transport-Security","max-age=31536000; includeSubdomains"),("X-Frame-Options","SAMEORIGIN"),("X-Xss-Protection","1; mode=block"),("X-Content-Type-Options","nosniff"),("Content-Security-Policy","default-src 'self'"),("X-Content-Security-Policy","default-src 'self'"),("X-WebKit-CSP","default-src 'self'"),("Cache-Control","no-cache, no-store, must-revalidate"),("Pragma","no-cache"),("Expires","0"),("Access-Control-Allow-Origin","*"),("Access-Control-Allow-Methods","GET, HEAD, OPTIONS"),("X-Cache","Miss from cloudfront"),("Via","1.1 4ce5e5162c2d4fc9022ceb290f794ffe.cloudfront.net (CloudFront)"),("X-Amz-Cf-Pop","AMS1-C1"),("X-Amz-Cf-Id","V8g__abrKZMYn3os-dRPOuJK3964z28Gk9VrOnh-l6rK4cHK3uRZ8g==")], responseBody = GetSapiV1SystemStatusResponse200 (GetSapiV1SystemStatusResponseBody200 {getSapiV1SystemStatusResponseBody200Msg = "normal", getSapiV1SystemStatusResponseBody200Status = 0}), responseCookieJar = CJ {expose = []}, responseClose' = ResponseClose, responseOriginalRequest = Request {
   host                 = "api.binance.com"
   port                 = 443
@@ -167,7 +167,7 @@ Response {responseStatus = Status {statusCode = 200, statusMessage = ""}, respon
 }
 }
 Binance API system status: normal (0)
-#+END_SRC
+#+END_EXAMPLE
 
 ** getApiV3Klines
 
@@ -181,7 +181,6 @@ import Control.Monad (when)
 import Data.Either ()
 import qualified Data.Text as T
 import qualified Network.HTTP.Simple as HS
-import qualified Settings as S
 
 defaultConf = Binance.defaultConfiguration
 
@@ -193,7 +192,7 @@ conf =
     }
 
 trade :: Bool -> IO ()
-trade  verbose = do
+trade verbose = do
   kl <- getKlines
   putStr "Binance API klines "
   case kl of
@@ -236,6 +235,20 @@ trade  verbose = do
           _ -> Left "wrong type of response"
 
 #+END_SRC
+
+Running this example code results in the following output (excerpt):
+
+#+BEGIN_EXAMPLE
+Binance API klines (500)                                                                                                                                                                       
+1: [ 1668674700000, 16579.28000000, 16580.95000000, 16572.00000000, 16576.36000000, 55.90257000, 1668674759999, 926698.28532810, 1124, 25.76195000, 427075.54336190, 0,  ]                     
+2: [ 1668674760000, 16576.36000000, 16580.35000000, 16567.78000000, 16570.00000000, 47.20438000, 1668674819999, 782390.60662060, 780, 19.95414000, 330747.43392430, 0,  ]                      
+3: [ 1668674820000, 16570.00000000, 16574.23000000, 16565.37000000, 16568.04000000, 44.22206000, 1668674879999, 732752.61122150, 906, 26.58506000, 440518.72028710, 0,  ]
+...
+497: [ 1668704460000, 16643.01000000, 16670.00000000, 16639.54000000, 16660.34000000, 260.66434000, 1668704519999, 4341628.84450980, 3393, 140.34795000, 2337813.95373040, 0,  ]
+498: [ 1668704520000, 16658.53000000, 16677.40000000, 16658.52000000, 16673.91000000, 189.25594000, 1668704579999, 3154901.49785200, 3246, 107.74395000, 1796194.88950920, 0,  ]
+499: [ 1668704580000, 16673.86000000, 16686.16000000, 16662.65000000, 16670.89000000, 97.68432000, 1668704639999, 1628707.62788410, 2400, 46.47844000, 775010.42178890, 0,  ]
+500: [ 1668704640000, 16669.80000000, 16678.15000000, 16668.27000000, 16668.27000000, 27.51324000, 1668704699999, 458747.76417530, 778, 12.29112000, 204949.28881110, 0,  
+#+END_EXAMPLE
 
 ** Other examples
 
