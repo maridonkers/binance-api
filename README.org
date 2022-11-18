@@ -172,67 +172,67 @@ Binance API system status: normal (0)
 ** getApiV3Klines
 
 #+BEGIN_SRC haskell
-{-# LANGUAGE OverloadedStrings #-}
+  {-# LANGUAGE OverloadedStrings #-}
 
-module Example2 where
+  module Example2 where
 
-import qualified Binance
-import Control.Monad (when)
-import Data.Either ()
-import qualified Data.Text as T
-import qualified Network.HTTP.Simple as HS
+  import qualified Binance
+  import Control.Monad (when)
+  import Data.Either ()
+  import qualified Data.Text as T
+  import qualified Network.HTTP.Simple as HS
 
-defaultConf = Binance.defaultConfiguration
+  defaultConf = Binance.defaultConfiguration
 
-config = Binance.apiKeyInHeaderAuthenticationSecurityScheme "your-api-key-goes-here"
+  config = Binance.apiKeyInHeaderAuthenticationSecurityScheme "your-api-key-goes-here"
 
-conf =
-  defaultConf
-    { Binance.configSecurityScheme = config
-    }
+  conf =
+    defaultConf
+      { Binance.configSecurityScheme = config
+      }
 
-trade :: Bool -> IO ()
-trade verbose = do
-  kl <- getKlines
-  putStr "Binance API klines "
-  case kl of
-    Left e -> putStrLn $ "*** " <> e
-    Right kls -> do
-      let l = length kls
-      putStrLn $ "(" <> show l <> ")"
-      mapM_ (\(i, ks) -> putStrLn $ show i <> ": [ " <> printKline ks <> " ]") $ zip [1 ..] kls
-  where
-    printKline = foldl (\acc c -> acc <> kLineToString c <> ", ") ""
-      where
-        kLineToString k = case k of
-          Binance.GetApiV3KlinesResponseBody200Variant1 s -> show s
-          Binance.GetApiV3KlinesResponseBody200Variant2 s -> T.unpack s
+  trade :: Bool -> IO ()
+  trade verbose = do
+    kl <- getKlines
+    putStr "Binance API klines "
+    case kl of
+      Left e -> putStrLn $ "*** " <> e
+      Right kls -> do
+        let l = length kls
+        putStrLn $ "(" <> show l <> ")"
+        mapM_ (\(i, ks) -> putStrLn $ show i <> ": [ " <> printKline ks <> " ]") $ zip [1 ..] kls
+    where
+      printKline = foldl (\acc c -> acc <> (if null acc then "" else ", ") <> kLineToString c) ""
+        where
+          kLineToString k = case k of
+            Binance.GetApiV3KlinesResponseBody200Variant1 s -> show s
+            Binance.GetApiV3KlinesResponseBody200Variant2 s -> T.unpack s
 
-    {-
-    [
-      [GetApiV3KlinesResponseBody200Variant1 1668666360000,       // Kline open time
-       GetApiV3KlinesResponseBody200Variant2 "16591.74000000",    // Open price
-       GetApiV3KlinesResponseBody200Variant2 "16592.06000000",    // High price
-       GetApiV3KlinesResponseBody200Variant2 "16583.62000000",    // Low price
-       GetApiV3KlinesResponseBody200Variant2 "16589.72000000",    // Close price
-       GetApiV3KlinesResponseBody200Variant2 "57.96618000",       // Volume
-       GetApiV3KlinesResponseBody200Variant1 1668666419999,       // Kline Close time
-       GetApiV3KlinesResponseBody200Variant2 "961540.25322330",   // Quote asset volume
-       GetApiV3KlinesResponseBody200Variant1 1219,                // Number of trades
-       GetApiV3KlinesResponseBody200Variant2 "29.84483000",       // Taker buy base asset volume
-       GetApiV3KlinesResponseBody200Variant2 "495075.60625770",   // Taker buy quote asset volume
-       GetApiV3KlinesResponseBody200Variant2 "0"]                 // Unused field, ignore.
-     ]
-    -}
-    getKlines = do
-      resp <-
-        Binance.runWithConfiguration conf $
-          Binance.getApiV3Klines $
-            Binance.mkGetApiV3KlinesParameters Binance.GetApiV3KlinesParametersQueryIntervalEnum1m "BTCBUSD"
-      pure $
-        case HS.getResponseBody resp of
-          Binance.GetApiV3KlinesResponse200 klines -> Right klines
-          _ -> Left "wrong type of response"
+      {-
+      [
+        [GetApiV3KlinesResponseBody200Variant1 1668666360000,       // Kline open time
+         GetApiV3KlinesResponseBody200Variant2 "16591.74000000",    // Open price
+         GetApiV3KlinesResponseBody200Variant2 "16592.06000000",    // High price
+         GetApiV3KlinesResponseBody200Variant2 "16583.62000000",    // Low price
+         GetApiV3KlinesResponseBody200Variant2 "16589.72000000",    // Close price
+         GetApiV3KlinesResponseBody200Variant2 "57.96618000",       // Volume
+         GetApiV3KlinesResponseBody200Variant1 1668666419999,       // Kline Close time
+         GetApiV3KlinesResponseBody200Variant2 "961540.25322330",   // Quote asset volume
+         GetApiV3KlinesResponseBody200Variant1 1219,                // Number of trades
+         GetApiV3KlinesResponseBody200Variant2 "29.84483000",       // Taker buy base asset volume
+         GetApiV3KlinesResponseBody200Variant2 "495075.60625770",   // Taker buy quote asset volume
+         GetApiV3KlinesResponseBody200Variant2 "0"]                 // Unused field, ignore.
+       ]
+      -}
+      getKlines = do
+        resp <-
+          Binance.runWithConfiguration conf $
+            Binance.getApiV3Klines $
+              Binance.mkGetApiV3KlinesParameters Binance.GetApiV3KlinesParametersQueryIntervalEnum1m "BTCBUSD"
+        pure $
+          case HS.getResponseBody resp of
+            Binance.GetApiV3KlinesResponse200 klines -> Right klines
+            _ -> Left "wrong type of response"
 
 #+END_SRC
 
@@ -240,14 +240,14 @@ Running this example code results in the following output (excerpt):
 
 #+BEGIN_EXAMPLE
 Binance API klines (500)                                                                                                                                                                       
-1: [ 1668674700000, 16579.28000000, 16580.95000000, 16572.00000000, 16576.36000000, 55.90257000, 1668674759999, 926698.28532810, 1124, 25.76195000, 427075.54336190, 0,  ]                     
-2: [ 1668674760000, 16576.36000000, 16580.35000000, 16567.78000000, 16570.00000000, 47.20438000, 1668674819999, 782390.60662060, 780, 19.95414000, 330747.43392430, 0,  ]                      
-3: [ 1668674820000, 16570.00000000, 16574.23000000, 16565.37000000, 16568.04000000, 44.22206000, 1668674879999, 732752.61122150, 906, 26.58506000, 440518.72028710, 0,  ]
+1: [ 1668674700000, 16579.28000000, 16580.95000000, 16572.00000000, 16576.36000000, 55.90257000, 1668674759999, 926698.28532810, 1124, 25.76195000, 427075.54336190, 0 ]                     
+2: [ 1668674760000, 16576.36000000, 16580.35000000, 16567.78000000, 16570.00000000, 47.20438000, 1668674819999, 782390.60662060, 780, 19.95414000, 330747.43392430, 0 ]                      
+3: [ 1668674820000, 16570.00000000, 16574.23000000, 16565.37000000, 16568.04000000, 44.22206000, 1668674879999, 732752.61122150, 906, 26.58506000, 440518.72028710, 0 ]
 ...
-497: [ 1668704460000, 16643.01000000, 16670.00000000, 16639.54000000, 16660.34000000, 260.66434000, 1668704519999, 4341628.84450980, 3393, 140.34795000, 2337813.95373040, 0,  ]
-498: [ 1668704520000, 16658.53000000, 16677.40000000, 16658.52000000, 16673.91000000, 189.25594000, 1668704579999, 3154901.49785200, 3246, 107.74395000, 1796194.88950920, 0,  ]
-499: [ 1668704580000, 16673.86000000, 16686.16000000, 16662.65000000, 16670.89000000, 97.68432000, 1668704639999, 1628707.62788410, 2400, 46.47844000, 775010.42178890, 0,  ]
-500: [ 1668704640000, 16669.80000000, 16678.15000000, 16668.27000000, 16668.27000000, 27.51324000, 1668704699999, 458747.76417530, 778, 12.29112000, 204949.28881110, 0,  
+497: [ 1668704460000, 16643.01000000, 16670.00000000, 16639.54000000, 16660.34000000, 260.66434000, 1668704519999, 4341628.84450980, 3393, 140.34795000, 2337813.95373040, 0 ]
+498: [ 1668704520000, 16658.53000000, 16677.40000000, 16658.52000000, 16673.91000000, 189.25594000, 1668704579999, 3154901.49785200, 3246, 107.74395000, 1796194.88950920, 0 ]
+499: [ 1668704580000, 16673.86000000, 16686.16000000, 16662.65000000, 16670.89000000, 97.68432000, 1668704639999, 1628707.62788410, 2400, 46.47844000, 775010.42178890, 0 ]
+500: [ 1668704640000, 16669.80000000, 16678.15000000, 16668.27000000, 16668.27000000, 27.51324000, 1668704699999, 458747.76417530, 778, 12.29112000, 204949.28881110, 0 ] 
 #+END_EXAMPLE
 
 ** Other examples
